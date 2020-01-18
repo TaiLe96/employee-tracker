@@ -1,6 +1,5 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-var employee;
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -9,12 +8,11 @@ var connection = mysql.createConnection({
     password: "password",
     database: "employee_db"
 });
-//connect to the mysql server and sql database
-connection.connect(function(err){
-    if (err) throw err;
-    question();
-});
-
+// connect to the mysql server and sql database
+// connection.connect(function(err){
+//     if (err) throw err;
+//     questions();
+// });
 
 // Function which prompts the users What they wants to do
 function question() {
@@ -26,53 +24,73 @@ function question() {
             choices: [
                 "View All Empolyees",
                 "View All Employee By Department",
-                "View All Employees By Manager",
+                "View All Roles",
                 "Add Employee",
                 "Remove Employee",
                 "Update Employee",
                 "Update Employee Manager",
-                "View All Role",
                 "Done"
             ]
         })
         .then(function (choices) {
             if (choices.todo === "View All Employees") {
-                showEmployee();
+                viewEmployee();
             } else if (choices.todo === "View All Employee By Department") {
-                showEmployeeByDepartment();
-            } else if (choices.todo === "View All Employees By Manager") {
-                showEmployeeByManager();
+                viewEmployeeByDepartment();
             } else if (choices.todo === "Add Employee") {
                 addEmployee();
             }else if (choices.todo === "Remove Employee"){
                 removeEmployee();
-            }else if (choices.todo === "Update Employee") {
-                updateEmployee();
-            } else if (choices.todo === "Update Employee Manager") {
-                updateEmployeeManager();
+            // }else if (choices.todo === "Update Employee") {
+            //     updateEmployee();
+            } else if (choices.todo === "Update Employee Role") {
+                updateEmployeeRole();
+            } else if (choices.todo === "View All Roles"){
+                viewAllRoles();
             } else {
-                viewAllRole();
+                done();
             }
+                
         })
 };
 
 
 // Function to show all employee
-function showEmployee(){
+function viewEmployee(){
     console.log("selecting all employee...\n");
-    var query = "SELECT * FROM employee";
+    // SELECT * FROM employee;
     connection.query("SELECT * FROM employee", function(err, res){
         if (err) throw err;
         console.log(res);
     })
+    question();
 };
 
+// Function to view all employee by department
+function viewEmployeeByDepartment(){
+    connection.query("SELECT first_name, last_name, department.name FROM ((employee INNER JOIN role ON role_id = role.id) INNER JOIN department ON department_id = department.id)", function(err,res){
+        if (err) throw err;
+    })
+    question();
+};
 
-
-
+function viewAllRoles(){
+    connection.query("SELECT * FROM role", function(err, res){
+        if (err) throw err;
+    })
+    question();
+}
 
 
 // Function to add new employee
+function getDepartmentNames(){
+    connection.query("SELECT name FROM department", function(err, res){
+        if (err) throw err;
+        let departments = [];
+        
+    })
+}
+ 
 function addEmployee(){
     inquirer
     .prompt([
@@ -123,8 +141,8 @@ function addEmployee(){
             console.log("Added successfully!");
             question();
         }
-        )
-    })
+        );
+    });
 }
 
 // function removeEmployee(){

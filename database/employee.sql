@@ -27,21 +27,3 @@ create table employee (
     primary key(id)
     
 );
-
-
-
-
-
-
-
--- insert into role (title, salaray, department_id)
--- values 
---     ("Sales Lead", 100000.00, "Sales"),
---     ("Engineering")
-
--- insert into employee (first_name, last_name, role) 
--- value
---     ("Tai", "Le", "Accountant"),
---     ("John", "Le", "Software Engineer"),
---     ("Alex", "Kim", "Lead Engineer"),
---     ("", "Le", "Accountant"),
