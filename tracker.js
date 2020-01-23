@@ -9,9 +9,7 @@ const db = new Database({
     database: "employee_db"
 });
 
-/*
-  Start of calls to the database 
-*/
+//   Start of calls to the database 
 async function getManagerNames() {
     let query = "SELECT * FROM employee WHERE manager_id IS NULL";
     const rows = await db.query(query);
